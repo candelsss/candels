@@ -1,3 +1,5 @@
+'use client'
+
 import './dropdown.css';
 import { CircleArrowDown, CircleArrowUp } from 'lucide-react';
 import { useState } from 'react';
@@ -64,8 +66,8 @@ export const DropdownButton = ({ children, options }) => {
         </button>
       </div>
 
-      <LightboxModal 
-        isOpen={open} 
+      <LightboxModal
+        isOpen={open}
         onClose={handleToggle}
         title={children}
       >

@@ -1,9 +1,9 @@
-
+'use client';
 
 import './inicio.css';
 import { CircleChevronRight } from 'lucide-react';
-import { NavLink } from 'react-router';
-import { CountUp } from '../../components/counter/Counter';
+import Link from 'next/link';
+import { CountUp } from '@/components/counter/Counter';
 import { useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 
@@ -18,12 +18,12 @@ export default function Inicio() {
         if (animationPlayed) {
             // Si ya se ejecutó, mostrar el estado final directamente
             logoContainerRef.current?.classList.add('rotate-a', 'rotate-d');
-            
+
             // Mostrar el botón de entrar inmediatamente
             const q = gsap.utils.selector(logoContainerRef);
             const enterCta = q('.logo-enter-cta');
             gsap.set(enterCta, { autoAlpha: 1, y: 0 });
-            
+
             return;
         }
 
@@ -49,11 +49,11 @@ export default function Inicio() {
 
             tl.to(leftDot, { autoAlpha: 1, scale: 1, duration: 0.22 })
                 .to(rightDot, { autoAlpha: 1, scale: 1, duration: 0.22 }, '+=0.06')
-                .to(letters, { 
-                    autoAlpha: 1, 
-                    y: 0, 
-                    scaleY: 1, 
-                    duration: 0.3, 
+                .to(letters, {
+                    autoAlpha: 1,
+                    y: 0,
+                    scaleY: 1,
+                    duration: 0.3,
                     stagger: {
                         each: 0.05,
                         from: "random"
@@ -110,9 +110,9 @@ export default function Inicio() {
                     </svg>
 
 
-                    <NavLink to="/portfolio" className="nav-link logo-enter-cta">
+                    <Link href="/portfolio" className="nav-link logo-enter-cta">
                         <CircleChevronRight size={32} />
-                    </NavLink>
+                    </Link>
                 </div>
 
             </main>

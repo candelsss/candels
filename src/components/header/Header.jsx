@@ -1,5 +1,7 @@
+'use client'
+
 import './header.css'
-import { NavLink } from 'react-router'
+import Link from 'next/link'
 import { EllipsisVertical, CircleX } from 'lucide-react';
 import { useState } from 'react';
 
@@ -23,9 +25,9 @@ export const Header = () => {
   };
   return (
     <header className='header'>
-      <NavLink to="/">
-        <img className="header-logo" src="/img/ICONO.png" alt="Logo" />  </NavLink>
-         <NavLink to="/"> <img className="header-logo-desk" src="/img/LOGO.png" alt="Logo" /></NavLink>
+      <Link href="/">
+        <img className="header-logo" src="/img/ICONO.png" alt="Logo" />  </Link>
+         <Link href="/"> <img className="header-logo-desk" src="/img/LOGO.png" alt="Logo" /></Link>
 
 
 <div className="header-menu-container">
@@ -33,10 +35,10 @@ export const Header = () => {
 
 {
   open && (
-   
+
     <ul className={`header-ul ${isClosing ? 'closing' : ''}`}>
-      <li className="header-li"><NavLink to="/portfolio">PORTFOLIO</NavLink></li>
-      <li className="header-li"><NavLink to="/contact">CONTACTO</NavLink></li>
+      <li className="header-li"><Link href="/portfolio">PORTFOLIO</Link></li>
+      <li className="header-li"><Link href="/contact">CONTACTO</Link></li>
     </ul>
   )
 }
@@ -46,11 +48,10 @@ export const Header = () => {
 
 {/* nav desk */}
          <ul className="header-ul-desk">
-          <li className="header-li"><NavLink to="/portfolio">PORTFOLIO</NavLink></li>
-          <li className="header-li"><NavLink to="/contact">CONTACTO</NavLink></li>
+          <li className="header-li"><Link href="/portfolio">PORTFOLIO</Link></li>
+          <li className="header-li"><Link href="/contact">CONTACTO</Link></li>
          </ul>
-    
+
     </header>
   )
 }
-

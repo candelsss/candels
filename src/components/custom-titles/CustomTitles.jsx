@@ -24,4 +24,3 @@ export const CustomTitles = ({ children }) => {
         </div>
     )
 }
-

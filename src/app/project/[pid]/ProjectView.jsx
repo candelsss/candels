@@ -1,35 +1,29 @@
-import './project.css'
-import { useParams } from 'react-router'
-import { dbProjects } from '../../db/db.js'
-import { CustomTitles } from '../../components/custom-titles/CustomTitles.jsx'
-import { Header } from '../../components/header/Header.jsx'
+'use client'
+
+import { Header } from '@/components/header/Header.jsx'
 import { useEffect, useState } from 'react'
 import { CircleChevronLeft, CircleChevronRight, CircleX, Link } from 'lucide-react';
-import { IconButton } from '../../components/buttons/IconButton.jsx';
-import { useNavigate } from 'react-router'
-import { LightboxModal } from '../../components/lightbox/LightboxModal.jsx'
+import { IconButton } from '@/components/buttons/IconButton.jsx'
+import { useRouter } from 'next/navigation'
+import { LightboxModal } from '@/components/lightbox/LightboxModal.jsx'
 
 
 
-const Project = () => {
+const ProjectView = ({ project }) => {
 
-
-  const { pid } = useParams()
-  const navigate = useNavigate()
-
-  const project = dbProjects.find(p => p.id === parseInt(pid))
+  const router = useRouter()
 
   // Estado para el slider
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
-  
+
   // Estados para el lightbox modal
   const [isLightboxOpen, setIsLightboxOpen] = useState(false)
   const [lightboxImageIndex, setLightboxImageIndex] = useState(0)
   const [isImageTransitioning, setIsImageTransitioning] = useState(false)
-  
+
   // Estado para controlar qué información mostrar en el project-info-container
   const [activeSection, setActiveSection] = useState('default')
-  
+
   // Estado para controlar las animaciones
   const [isAnimating, setIsAnimating] = useState(false)
 
@@ -46,21 +40,14 @@ const Project = () => {
     setIsMobileIntroReady(false)
     const t = setTimeout(() => setIsMobileIntroReady(true), 600)
     return () => clearTimeout(t)
-  }, [pid])
-
-  if (!project) {
-    return (
-      <div>
-        <h1>Proyecto no encontrado</h1>
-      </div>
-    )
-  }
+  }, [project.id])
 
 
 
 
   const handleBack = () => {
-    navigate('/portfolio', { state: { transition: 'back' } })
+    sessionStorage.setItem('page-transition-mode', 'back')
+    router.push('/portfolio')
   }
 
   // Funciones para el lightbox modal
@@ -109,9 +96,9 @@ const Project = () => {
         return {
           subtitle: 'LINK',
           content: project.link ? (
-            <a 
-              href={project.link} 
-              target="_blank" 
+            <a
+              href={project.link}
+              target="_blank"
               rel="noopener noreferrer"
               className="project-link-content"
             >
@@ -184,7 +171,7 @@ const Project = () => {
     }
   }
 
-  
+
   return (
     <div>
       <Header />
@@ -242,12 +229,12 @@ const Project = () => {
             ))}
           </div>
         </section>
-       
+
       </main>
 
       {/* Lightbox Modal con Slider */}
-      <LightboxModal 
-        isOpen={isLightboxOpen} 
+      <LightboxModal
+        isOpen={isLightboxOpen}
         onClose={closeLightbox}
         title={`${project.name} - Imagen ${lightboxImageIndex + 1} de ${project.images.length}`}
       >
@@ -255,25 +242,25 @@ const Project = () => {
           <button className="lightbox-nav-btn prev-btn desktop-only" onClick={prevLightboxImage}>
             <CircleChevronLeft size={32} />
           </button>
-          
-          <div 
+
+          <div
             className="lightbox-image-container"
             onTouchStart={onTouchStart}
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
           >
-            <img 
-              src={project.images[lightboxImageIndex]} 
+            <img
+              src={project.images[lightboxImageIndex]}
               alt={`${project.name} - Imagen ${lightboxImageIndex + 1}`}
               className={`lightbox-image ${isImageTransitioning ? 'image-transition' : 'image-active'}`}
             />
           </div>
-          
+
           <button className="lightbox-nav-btn next-btn desktop-only" onClick={nextLightboxImage}>
             <CircleChevronRight size={32} />
           </button>
         </div>
-        
+
         {/* Indicadores del slider */}
         <div className="lightbox-dots">
           {project.images.map((_, index) => (
@@ -289,4 +276,4 @@ const Project = () => {
   )
 }
 
-export default Project
+export default ProjectView

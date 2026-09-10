@@ -1,3 +1,5 @@
+'use client'
+
 import './lightbox.css'
 import { X } from 'lucide-react';
 import { useEffect } from 'react'
@@ -34,11 +36,11 @@ export const LightboxModal = ({ isOpen, onClose, title, children }) => {
       <div className="lightbox-content">
         <button className="lightbox-close" onClick={onClose}>
           <X className="close-icon" size={32} />
-          
+
         </button>
-        
-     
-        
+
+
+
         <div className="lightbox-body">
           {children}
         </div>

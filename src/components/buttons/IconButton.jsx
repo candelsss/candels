@@ -1,6 +1,5 @@
 
 
-
 import './iconbutton.css'
 
 export const IconButton = ({ children, icon, onClick }) => {

@@ -1,3 +1,6 @@
+/* Importar Poppins desde Google Fonts con fallback */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -35,9 +38,6 @@ body {
   font-weight: normal;
   font-style: normal;
 }
-
-/* Importar Poppins desde Google Fonts con fallback */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 /* Clase para evitar traducción automática */
 .no-translate {

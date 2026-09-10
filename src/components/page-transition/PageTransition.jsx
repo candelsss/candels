@@ -1,24 +1,27 @@
+'use client'
+
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { useLocation, useOutlet } from 'react-router';
+import { usePathname } from 'next/navigation';
 import './page-transition.css';
 
-const PageTransition = () => {
-  const location = useLocation();
-  const outlet = useOutlet();
+const PageTransition = ({ children }) => {
+  const pathname = usePathname();
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isGoingHome, setIsGoingHome] = useState(false);
   const [transitionMode, setTransitionMode] = useState('forward');
-  const [prevOutlet, setPrevOutlet] = useState(null);
-  const [currentOutlet, setCurrentOutlet] = useState(outlet);
+  const [prevChildren, setPrevChildren] = useState(null);
+  const [currentChildren, setCurrentChildren] = useState(children);
+  const [currentPathname, setCurrentPathname] = useState(pathname);
   const transitionTimerRef = useRef(null);
 
   useLayoutEffect(() => {
-    if (currentOutlet === outlet) return;
+    if (!children || pathname === currentPathname) return;
 
-    const goingToHome = location.pathname === '/' || location.pathname === '/home';
+    const goingToHome = pathname === '/' || pathname === '/home';
     setIsGoingHome(goingToHome);
 
-    const navMode = location.state && typeof location.state === 'object' ? location.state.transition : undefined;
+    const navMode = sessionStorage.getItem('page-transition-mode');
+    if (navMode) sessionStorage.removeItem('page-transition-mode');
     setTransitionMode(navMode === 'back' ? 'back' : 'forward');
 
     if (transitionTimerRef.current) {
@@ -26,34 +29,35 @@ const PageTransition = () => {
       transitionTimerRef.current = null;
     }
 
-    setPrevOutlet(currentOutlet);
+    setPrevChildren(currentChildren);
     setIsTransitioning(true);
 
     transitionTimerRef.current = setTimeout(() => {
       setIsTransitioning(false);
-      setPrevOutlet(null);
-      setCurrentOutlet(outlet);
+      setPrevChildren(null);
+      setCurrentChildren(children);
+      setCurrentPathname(pathname);
       transitionTimerRef.current = null;
     }, 600);
-  }, [location.key, outlet, location.pathname, currentOutlet]);
+  }, [pathname, children, currentChildren, currentPathname]);
 
   useEffect(() => {
-    if (!currentOutlet) setCurrentOutlet(outlet);
-  }, [currentOutlet, outlet]);
+    if (!currentChildren && children) setCurrentChildren(children);
+  }, [currentChildren, children]);
 
   return (
     <div className="page-transition-wrapper">
-      {isTransitioning && prevOutlet ? (
+      {isTransitioning && prevChildren ? (
         <>
-          <div className="page-transition-layer layer-prev">{prevOutlet}</div>
+          <div className="page-transition-layer layer-prev">{prevChildren}</div>
           <div
             className={`page-transition-layer layer-next ${isTransitioning ? 'transitioning' : ''} ${transitionMode === 'back' ? 'mode-back' : 'mode-forward'} ${isGoingHome ? 'going-home' : 'going-to-page'}`}
           >
-            {outlet}
+            {children}
           </div>
         </>
       ) : (
-        <div className="page-transition-layer layer-current">{currentOutlet}</div>
+        <div className="page-transition-layer layer-current">{currentChildren}</div>
       )}
     </div>
   );

@@ -1,9 +1,11 @@
+'use client'
+
 import './portfolio.css'
-import { dbProjects } from '../../db/db'
-import CardsProjects from '../../components/cards-projects/CardsProjects'
-import {Header} from '../../components/header/Header'
+import { dbProjects } from '@/db/db'
+import CardsProjects from '@/components/cards-projects/CardsProjects'
+import { Header } from '@/components/header/Header'
 import { useState } from 'react'
-import { LightboxModal } from '../../components/lightbox/LightboxModal.jsx'
+import { LightboxModal } from '@/components/lightbox/LightboxModal.jsx'
 import { ChevronRight } from 'lucide-react';
 import { ChevronLeft } from 'lucide-react';
 import { Maximize2 } from 'lucide-react';
@@ -15,14 +17,14 @@ const Portfolio = () => {
   const [hoveredProject, setHoveredProject] = useState(null)
   const [selectedProject, setSelectedProject] = useState(null)
   const [activeSection, setActiveSection] = useState(null)
-  
+
   // Estados para el lightbox
   const [isLightboxOpen, setIsLightboxOpen] = useState(false)
   const [lightboxImageIndex, setLightboxImageIndex] = useState(0)
   const [isImageTransitioning, setIsImageTransitioning] = useState(false)
 
   // Reordenar proyectos: el seleccionado primero, luego el resto
-  const reorderedProjects = selectedProject 
+  const reorderedProjects = selectedProject
     ? [
         dbProjects.find(p => p.id === selectedProject),
         ...dbProjects.filter(p => p.id !== selectedProject)
@@ -78,10 +80,10 @@ const Portfolio = () => {
     }
   }
 
-  
+
   return (
     <div>
-      <Header />    
+      <Header />
       {/* <CustomTitles>PORTFOLIO</CustomTitles> */}
 
       <div className="title-subtitle-container">
@@ -111,8 +113,8 @@ const Portfolio = () => {
         <div className={`desktop-container ${selectedProject ? 'shifted' : ''}`}>
           <ul className="portf-list-desk">
             {reorderedProjects.map((project) => (
-              <li 
-                key={project.id} 
+              <li
+                key={project.id}
                 className={selectedProject === project.id ? 'active' : ''}
                 onMouseEnter={() => setHoveredProject(project.id)}
                 onMouseLeave={() => setHoveredProject(null)}
@@ -128,7 +130,7 @@ const Portfolio = () => {
             ))}
           </ul>
         </div>
-        
+
         {selectedProject && (
           <div className={`project-detail-container ${selectedProject ? 'show' : ''}`}>
             <div className="project-content">
@@ -136,39 +138,39 @@ const Portfolio = () => {
               <button className="preview-btn" onClick={openLightbox}>
                 PREVIEW <Maximize2 size={12} />
               </button>
-              
+
               {/* Contenedor para imagen */}
               <div className="project-images">
                 {dbProjects.find(p => p.id === selectedProject)?.frontPage && (
-                  <img 
+                  <img
                     key={`project-image-${selectedProject}`}
-                    src={dbProjects.find(p => p.id === selectedProject).frontPage} 
+                    src={dbProjects.find(p => p.id === selectedProject).frontPage}
                     alt={dbProjects.find(p => p.id === selectedProject).name}
                     className="project-main-image"
                   />
                 )}
               </div>
-              
+
               {/* Acordeón minimalista */}
               <div className="project-info-accordion">
                 {/* Header con el nombre del proyecto y secciones */}
                 <div className="project-info-acordion-header">
-                  <div 
+                  <div
                     className={`inf-header ${activeSection === 'description' ? 'active' : ''}`}
                     onClick={() => handleSectionClick('description')}
                   >
                     <h5>{dbProjects.find(p => p.id === selectedProject)?.name}</h5>
                   </div>
-                  
-                  <div 
+
+                  <div
                     className={`inf-header ${activeSection === 'skills' ? 'active' : ''}`}
                     onClick={() => handleSectionClick('skills')}
                   >
                     <h5>Skills</h5>
                   </div>
-                  
+
                   {dbProjects.find(p => p.id === selectedProject)?.link && (
-                    <div 
+                    <div
                       className={`inf-header ${activeSection === 'link' ? 'active' : ''}`}
                       onClick={() => handleSectionClick('link')}
                     >
@@ -193,9 +195,9 @@ const Portfolio = () => {
 
                   {dbProjects.find(p => p.id === selectedProject)?.link && (
                     <div className={`info-content ${activeSection === 'link' ? 'open' : ''}`}>
-                      <a 
-                        href={dbProjects.find(p => p.id === selectedProject).link} 
-                        target="_blank" 
+                      <a
+                        href={dbProjects.find(p => p.id === selectedProject).link}
+                        target="_blank"
                         rel="noopener noreferrer"
                         className="project-link"
                       >
@@ -205,14 +207,14 @@ const Portfolio = () => {
                   )}
                 </div>
               </div>
-              
+
               {/* Secciones de información */}
-             
+
             </div>
           </div>
         )}
       </div>
-      
+
       {/* Lightbox Modal */}
       <LightboxModal isOpen={isLightboxOpen} onClose={closeLightbox}>
         {selectedProject && dbProjects.find(p => p.id === selectedProject)?.images.length > 0 && (
@@ -228,14 +230,14 @@ const Portfolio = () => {
                 </button>
               </>
             )}
-            
+
             {/* Imagen actual */}
-            <img 
-              src={dbProjects.find(p => p.id === selectedProject).images[lightboxImageIndex]} 
+            <img
+              src={dbProjects.find(p => p.id === selectedProject).images[lightboxImageIndex]}
               alt={`Project image ${lightboxImageIndex + 1}`}
               className={`lightbox-image ${isImageTransitioning ? 'transitioning' : ''}`}
             />
-            
+
             {/* Contador */}
             {dbProjects.find(p => p.id === selectedProject).images.length > 1 && (
               <div className="lightbox-counter">

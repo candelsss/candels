@@ -1,16 +1,16 @@
-
+'use client'
 
 import './cards-projects.css'
 import { ArrowUpRight } from 'lucide-react'
-import { useNavigate } from 'react-router'
+import { useRouter } from 'next/navigation'
 
 const CardsProjects = ({name, description, link, id}) => {
-  const navigate = useNavigate()
-  
+  const router = useRouter()
+
   const handleProjectClick = () => {
-    navigate(`/project/${id}`)
+    router.push(`/project/${id}`)
   }
-  
+
   return (
     <div className='project-card'>
 

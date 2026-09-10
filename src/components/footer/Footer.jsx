@@ -5,7 +5,7 @@ import './footer.css'
 export const Footer = () => {
     return (
         <>
-        
+
 
 <div className="footer-separador">
     <div className="separador"></div>
@@ -14,10 +14,10 @@ export const Footer = () => {
 </div>
 
         <footer className="footer">
-           
+
             <div className="footer-content">
                 <img src="/img/LOGO.png" alt="Candels Logo" className="footer-logo" />
-               
+
             </div>
 
             <ul className="footer-content">
@@ -34,7 +34,7 @@ export const Footer = () => {
 
             </ul>
         </footer>
-        
+
         </>
      );
 }

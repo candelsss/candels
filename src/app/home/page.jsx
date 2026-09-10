@@ -1,12 +1,12 @@
-
+'use client';
 
 import './home.css';
-import { NavLink } from 'react-router';
+import Link from 'next/link';
 
 export default function Home() {
     return (
         <div>
-            <NavLink to="/portfolio">PORTFOLIO</NavLink>
+            <Link href="/portfolio">PORTFOLIO</Link>
         </div>
     );
 }

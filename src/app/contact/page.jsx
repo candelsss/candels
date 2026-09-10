@@ -1,9 +1,10 @@
+'use client'
 
 import './contact.css'
-import { CustomTitles } from '../../components/custom-titles/CustomTitles';
-import { DropdownButton } from '../../components/buttons/DropDownButton';
-import { Header } from '../../components/header/Header';
-import { Button } from '../../components/buttons/Button';
+import { CustomTitles } from '@/components/custom-titles/CustomTitles';
+import { DropdownButton } from '@/components/buttons/DropDownButton';
+import { Header } from '@/components/header/Header';
+import { Button } from '@/components/buttons/Button';
 import { CircleX, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
 import { useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
@@ -164,7 +165,7 @@ const Contact = () => {
 
 
     const contactOptions = [
-        { value: 'mailto:infocandels@gmail.com', label: 'EMAIL' },
+        { value: 'mailto:hola.candels@gmail.com', label: 'EMAIL' },
 
         { value: 'https://www.instagram.com/candelsss__/', label: 'INSTAGRAM' },
         { value: 'https://wa.me/34654068208', label: 'WHATSAPP' }
@@ -385,7 +386,7 @@ const Contact = () => {
                                             <p className="direct-title">{option.label}</p>
                                             <div className="direct-content">
                                                 <a href={option.value} className="direct-p" target="_blank" rel="noopener noreferrer">
-                                                    {option.label === 'EMAIL' ? 'infocandels@gmail.com' :
+                                                    {option.label === 'EMAIL' ? 'hola.candels@gmail.com' :
                                                         option.label === 'INSTAGRAM' ? '@candelssss__' :
                                                             '(+34) 654 068 208'}
                                                 </a>
