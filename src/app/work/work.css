@@ -1,0 +1,87 @@
+/* Mobile first: cada card ocupa una pantalla entera y su contenido queda centrado
+   (horizontal y vertical) dentro de ella, igual que en el slider de desktop pero
+   en vertical: conforme haces scroll, "sube" la siguiente card hasta centrarse. */
+.work-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.work-list .project-card {
+    width: 80%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transform-origin: center;
+    /* Para que el scroll "frene" y centre cada proyecto (ver body.work-scroll-snap) */
+    scroll-snap-align: center;
+}
+
+/* Activado por work/page.jsx mientras esa página está montada: el scroll de toda la
+   página (body, ver globals.css) para en seco en cada proyecto, como si fueran páginas
+   completas ("mandatory" en vez de "proximity": no se queda a medias entre dos).
+   Solo tiene efecto en mobile/tablet (en desktop el slider va en horizontal). */
+body.work-scroll-snap {
+    scroll-snap-type: y mandatory;
+}
+
+/* El set "main" es el único real; los "clone" son copias para el loop infinito en
+   desktop (ver work/page.jsx) y se ocultan por completo en mobile. */
+.work-list-set {
+    display: contents;
+}
+
+.work-list-set-clone {
+    display: none;
+}
+
+/* 2ª card (Visera): se recortaba con "cover", aquí queda entera con "contain",
+   y el contenedor usa el mismo gris real de fondo de la imagen (#EFEFEF) para que se mimeticen.
+   Escogido dentro de cada set (no de .work-list) porque con el loop infinito hay 3 copias. */
+.work-list-set > .project-card:nth-child(2) .project-card-img {
+    object-fit: contain;
+}
+
+.work-list-set > .project-card:nth-child(2) .project-card-media {
+    background-color: #EFEFEF;
+}
+
+/* Desktop: slider horizontal con scroll, centrado en pantalla, una fila de cards a tamaño fijo */
+@media screen and (min-width: 1024px) {
+    body.work-scroll-snap {
+        scroll-snap-type: none;
+    }
+
+    .work-list {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 3rem;
+        height: 100vh;
+        padding: 0 3rem;
+        overflow-x: auto;
+        scroll-snap-type: x proximity;
+        /* Ocultar la barra de scroll (el gesto de scroll sigue funcionando) */
+        scrollbar-width: none;
+    }
+
+    .work-list::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Mostrar también las copias: hacen falta para el loop infinito */
+    .work-list-set-clone {
+        display: contents;
+    }
+
+    /* Reseteamos lo que la regla mobile pone en .project-card (pantalla completa,
+       contenido centrado): en desktop cada card vuelve a ser compacta */
+    .work-list .project-card {
+        flex: 0 0 auto;
+        width: min(32vw, 480px);
+        min-height: 0;
+        justify-content: flex-start;
+        scroll-snap-align: start;
+    }
+}

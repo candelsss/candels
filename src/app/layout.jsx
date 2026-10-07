@@ -1,5 +1,18 @@
+import Script from 'next/script'
 import PageTransition from '@/components/page-transition/PageTransition'
+import { ThemeProvider } from '@/components/theme-provider/ThemeProvider'
 import './globals.css'
+
+// Aplica el tema guardado (o el del sistema) antes de que React hidrate, para evitar parpadeos.
+const themeInitScript = `
+(function () {
+  try {
+    var stored = localStorage.getItem('theme');
+    var theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch (e) {}
+})();
+`
 
 export const metadata = {
   title: 'candels - Diseño UX/UI | Desarrollo web Freelance',
@@ -31,11 +44,14 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="es">
+    <html lang="es" suppressHydrationWarning>
       <body>
-        <div translate="no">
-          <PageTransition>{children}</PageTransition>
-        </div>
+        <Script id="theme-init" strategy="beforeInteractive" dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <ThemeProvider>
+          <div translate="no">
+            <PageTransition>{children}</PageTransition>
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   )

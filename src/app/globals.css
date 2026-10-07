@@ -12,6 +12,16 @@ html, body, #root {
   overflow-x: hidden;
 }
 
+/* Oculta la barra de scroll visualmente (el scroll sigue funcionando igual) */
+html, body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Edge/IE legacy */
+}
+
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, navegadores basados en Chromium */
+}
+
 body {
   background-color: var(--background);
   color: var(--text);
@@ -20,7 +30,8 @@ body {
 
 :root {
   --background: #F6F5F0;
-  --text: #333333;
+  --text: #212121;
+  --text-secondary: #505050;
 
   --secondary: #FF7D85;
 
@@ -28,6 +39,17 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+:root[data-theme="dark"] {
+  --background: #212121;
+  --text: #F6F6F6;
+  --text-secondary: rgba(198, 198, 198, 0.56);
+}
+
+/* Transición suave de color al cambiar de modo (claro/oscuro) */
+*, *::before, *::after {
+  transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease, fill 0.35s ease, stroke 0.35s ease;
 }
 
 /* fonts */

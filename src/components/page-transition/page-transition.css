@@ -18,69 +18,107 @@
   background-color: var(--background);
 }
 
+/* Parallax tipo "push" (iOS): la página saliente (layer-prev) se mueve solo una
+   fracción de la pantalla y se oscurece un poco, como si quedara detrás/debajo;
+   la entrante (layer-next) recorre el 100% y lleva una sombra en el borde de
+   avance para que se note que pasa físicamente por encima. */
 .page-transition-layer.layer-prev {
   z-index: 1;
+  will-change: transform, opacity;
+  background-color: var(--background);
 }
 
 .page-transition-layer.layer-next {
   z-index: 2;
-  will-change: clip-path, transform;
+  will-change: transform;
   background-color: var(--background);
 }
 
-.page-transition-layer.layer-next.going-to-page {
-  clip-path: inset(0 0 0 100%);
-}
-
-.page-transition-layer.layer-next.mode-back.going-to-page {
-  clip-path: inset(0 100% 0 0);
-}
-
-.page-transition-layer.layer-next.going-home {
-  clip-path: inset(100% 0 0 0);
-}
-
+/* Curva tipo easeOutExpo: arranca fuerte y frena con suavidad al llegar, se
+   siente más intencionado que una curva simétrica. */
 .page-transition-layer.layer-next.transitioning.going-to-page {
-  animation: revealFromRight 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: parallaxInFromRight 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: -32px 0 60px rgba(0, 0, 0, 0.35);
+}
+
+.page-transition-layer.layer-prev.transitioning.going-to-page {
+  animation: parallaxOutToLeft 0.75s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .page-transition-layer.layer-next.mode-back.transitioning.going-to-page {
-  animation: revealFromLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: parallaxInFromLeft 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 32px 0 60px rgba(0, 0, 0, 0.35);
+}
+
+.page-transition-layer.layer-prev.mode-back.transitioning.going-to-page {
+  animation: parallaxOutToRight 0.75s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .page-transition-layer.layer-next.transitioning.going-home {
-  animation: revealFromTop 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: parallaxInFromBottom 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 -32px 60px rgba(0, 0, 0, 0.35);
 }
 
-@keyframes revealFromRight {
+.page-transition-layer.layer-prev.transitioning.going-home {
+  animation: parallaxOutToTop 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes parallaxInFromRight {
   0% {
-    clip-path: inset(0 0 0 100%);
-    transform: translateX(24px);
+    transform: translateX(100%);
   }
   100% {
-    clip-path: inset(0 0 0 0);
     transform: translateX(0);
   }
 }
 
-@keyframes revealFromLeft {
+@keyframes parallaxOutToLeft {
   0% {
-    clip-path: inset(0 100% 0 0);
-    transform: translateX(-24px);
+    transform: translateX(0);
+    opacity: 1;
   }
   100% {
-    clip-path: inset(0 0 0 0);
+    transform: translateX(-25%);
+    opacity: 0.7;
+  }
+}
+
+@keyframes parallaxInFromLeft {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
     transform: translateX(0);
   }
 }
 
-@keyframes revealFromTop {
+@keyframes parallaxOutToRight {
   0% {
-    clip-path: inset(100% 0 0 0);
-    transform: translateY(-24px);
+    transform: translateX(0);
+    opacity: 1;
   }
   100% {
-    clip-path: inset(0 0 0 0);
+    transform: translateX(25%);
+    opacity: 0.7;
+  }
+}
+
+@keyframes parallaxInFromBottom {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
     transform: translateY(0);
+  }
+}
+
+@keyframes parallaxOutToTop {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-25%);
+    opacity: 0.7;
   }
 }

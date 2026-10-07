@@ -1,0 +1,24 @@
+.cursor-trail-container {
+    display: none;
+}
+
+@media screen and (min-width: 768px) {
+    .cursor-trail-container {
+        display: block;
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 5;
+        overflow: hidden;
+    }
+}
+
+.cursor-trail-square {
+    position: absolute;
+    width: 400px;
+    height: 300px;
+    border-radius: 4px;
+    object-fit: cover;
+    pointer-events: none;
+    will-change: transform, opacity;
+}

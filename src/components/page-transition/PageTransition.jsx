@@ -38,7 +38,7 @@ const PageTransition = ({ children }) => {
       setCurrentChildren(children);
       setCurrentPathname(pathname);
       transitionTimerRef.current = null;
-    }, 600);
+    }, 750);
   }, [pathname, children, currentChildren, currentPathname]);
 
   useEffect(() => {
@@ -49,9 +49,13 @@ const PageTransition = ({ children }) => {
     <div className="page-transition-wrapper">
       {isTransitioning && prevChildren ? (
         <>
-          <div className="page-transition-layer layer-prev">{prevChildren}</div>
           <div
-            className={`page-transition-layer layer-next ${isTransitioning ? 'transitioning' : ''} ${transitionMode === 'back' ? 'mode-back' : 'mode-forward'} ${isGoingHome ? 'going-home' : 'going-to-page'}`}
+            className={`page-transition-layer layer-prev transitioning ${transitionMode === 'back' ? 'mode-back' : 'mode-forward'} ${isGoingHome ? 'going-home' : 'going-to-page'}`}
+          >
+            {prevChildren}
+          </div>
+          <div
+            className={`page-transition-layer layer-next transitioning ${transitionMode === 'back' ? 'mode-back' : 'mode-forward'} ${isGoingHome ? 'going-home' : 'going-to-page'}`}
           >
             {children}
           </div>

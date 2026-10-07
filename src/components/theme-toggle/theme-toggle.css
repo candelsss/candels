@@ -1,0 +1,17 @@
+.theme-toggle {
+    flex-shrink: 0;
+    border: none;
+    background: transparent;
+    padding: 0;
+    color: var(--text);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+@media screen and (min-width: 1024px) {
+    .theme-toggle {
+        font-size: 0.95rem;
+    }
+}

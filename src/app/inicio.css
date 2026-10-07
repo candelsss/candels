@@ -1,6 +1,5 @@
 
 
-
 .main {
     display: flex;
     justify-content: center;
@@ -8,28 +7,63 @@
     height: 100vh;
 }
 
-
 .logo-container {
+    position: relative;
+    z-index: 10;
     display: flex;
     margin-top: 3rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 4rem;
 }
 
-.logo-container .logo-enter-cta {
-    pointer-events: none;
+.logo-wordmark-wrap {
+    position: relative;
+    display: inline-block;
 }
 
-.logo-container .logo-enter-cta[style*="opacity: 1"],
-.logo-container .logo-enter-cta[style*="opacity:1"] {
-    pointer-events: auto;
+/* Mobile: centrado bajo el logo (que a su vez ya está centrado en pantalla).
+   A partir de tablet pasa a ir pegado a la esquina inferior derecha (ver media query). */
+.proyectos-link {
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    transform: translateX(-50%);
+    margin-top: 0.75rem;
+    color: var(--text);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: none;
 }
 
 .logo-container svg .logo-letter,
 .logo-container svg .logo-edge-dot {
     transform-box: fill-box;
+}
+
+/* Efecto persiana: la máscara recorta el texto y este sube desde "debajo" (yPercent)
+   hasta su posición real, como si una persiana se levantara de abajo arriba. */
+.reveal-mask {
+    display: inline-block;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.intro-done .reveal-mask {
+    pointer-events: auto;
+}
+
+.reveal-text {
+    display: inline-block;
+}
+
+/* Tamaño del logo por debajo de 768px (antes no había regla y usaba el tamaño nativo del SVG, 367px).
+   Ojo: ">" en vez de espacio: logo-wordmark-wrap también envuelve el link de "proyectos",
+   y no queremos que esta regla afecte a nada que no sea el propio svg del logo. */
+.logo-wordmark-wrap > svg {
+    width: clamp(320px, 95vw, 600px);
+    height: auto;
 }
 
 /* Animación de rotación para los círculos de la letra A */
@@ -137,30 +171,33 @@
     }
 }
 
-/* Desktop: SVG aún más grande */
-@media screen and (min-width: 1024px) {
-    .logo-container svg {
-        width: 734px;
-        height: 118px;
-    }
-    
-    /* Icono más pequeño en desktop */
-    .logo-container .nav-link svg {
-        width: 40px !important;
-        height: 40px !important;
+/* A partir de tablet, "proyectos" vuelve a ir pegado a la esquina del logo en vez de centrado */
+@media screen and (min-width: 768px) {
+    .proyectos-link {
+        left: auto;
+        right: 0;
+        transform: none;
     }
 }
 
-/* Tablet: SVG más grande */
-@media screen and (min-width: 768px) and (max-width: 1023px) {
-    .logo-container svg {
-        width: 550px;
-        height: 88px;
+/* Desktop: SVG aún más grande. En px fijo se cortaba en ventanas justo por encima de
+   1024px; con clamp() nunca pasa de ancho de pantalla disponible. */
+@media screen and (min-width: 1024px) {
+    .logo-wordmark-wrap > svg {
+        width: clamp(600px, 80vw, 1100px);
+        height: auto;
     }
-    
-    /* Icono más pequeño en tablet */
-    .logo-container .nav-link svg {
-        width: 40px !important;
-        height: 40px !important;
+
+    .proyectos-link {
+        font-size: 1rem;
+    }
+}
+
+/* Tablet: SVG más grande. Igual que arriba, clamp() en vez de px fijo: con 850px fijo
+   se cortaba en tablets más estrechas que eso (p. ej. iPad Air, 820px). */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    .logo-wordmark-wrap > svg {
+        width: clamp(500px, 85vw, 850px);
+        height: auto;
     }
 }
