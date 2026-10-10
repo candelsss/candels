@@ -14,16 +14,23 @@
     flex-direction: column;
     justify-content: center;
     transform-origin: center;
-    /* Para que el scroll "frene" y centre cada proyecto (ver body.work-scroll-snap) */
+    /* Para que el scroll "frene" y centre cada proyecto (ver body.work-scroll-snap).
+       will-change avisa al navegador para que promocione la card a su propia capa
+       y no tenga que repintar nada por detrás en cada frame del scroll (en mandatory,
+       en móviles reales de gama media se notaba como lentitud). */
     scroll-snap-align: center;
+    will-change: transform, opacity;
 }
 
 /* Activado por work/page.jsx mientras esa página está montada: el scroll de toda la
-   página (body, ver globals.css) para en seco en cada proyecto, como si fueran páginas
-   completas ("mandatory" en vez de "proximity": no se queda a medias entre dos).
+   página (body, ver globals.css) frena en cada proyecto, como si fueran páginas
+   completas. "proximity" en vez de "mandatory": en pruebas reales en mobile,
+   "mandatory" forzaba una animación de scroll nativa en cada toque que competía
+   con la de GSAP y se notaba lento; "proximity" frena igual pero no obliga a
+   completar el snap si el usuario ya está interactuando, así que va más fluido.
    Solo tiene efecto en mobile/tablet (en desktop el slider va en horizontal). */
 body.work-scroll-snap {
-    scroll-snap-type: y mandatory;
+    scroll-snap-type: y proximity;
 }
 
 /* El set "main" es el único real; los "clone" son copias para el loop infinito en

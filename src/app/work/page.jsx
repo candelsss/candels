@@ -20,13 +20,21 @@ const FOCUS_MIN_SCALE = 0.68
 const FOCUS_MIN_OPACITY = 0.25
 const FOCUS_MAX_Y = 50
 
-function applyFocus(self) {
-  const distanceFromCenter = Math.abs(self.progress - 0.5) * 2 // 0 en el centro, 1 en los extremos
-  gsap.set(self.trigger, {
-    scale: 1 - distanceFromCenter * (1 - FOCUS_MIN_SCALE),
-    opacity: 1 - distanceFromCenter * (1 - FOCUS_MIN_OPACITY),
-    y: distanceFromCenter * FOCUS_MAX_Y,
-  })
+// gsap.quickSetter en vez de gsap.set: en mandatos de scroll esto se llama en
+// cada frame, y quickSetter evita el coste de volver a parsear el objeto de
+// propiedades cada vez (recomendado por GSAP para onUpdate de alta frecuencia).
+// En mobiles reales de gama media/baja, usar gsap.set aquí se notaba como lentitud.
+function createFocusUpdater(target) {
+  const setScale = gsap.quickSetter(target, 'scale')
+  const setOpacity = gsap.quickSetter(target, 'opacity')
+  const setY = gsap.quickSetter(target, 'y', 'px')
+
+  return (self) => {
+    const distanceFromCenter = Math.abs(self.progress - 0.5) * 2 // 0 en el centro, 1 en los extremos
+    setScale(1 - distanceFromCenter * (1 - FOCUS_MIN_SCALE))
+    setOpacity(1 - distanceFromCenter * (1 - FOCUS_MIN_OPACITY))
+    setY(distanceFromCenter * FOCUS_MAX_Y)
+  }
 }
 
 // Solo desktop: para poder hacer scroll "infinito" repetimos el set de proyectos 3 veces
@@ -83,6 +91,7 @@ const Work = () => {
           // Slider horizontal: la card centrada se ve grande y nítida, las de los
           // lados se encogen, atenúan y bajan según se alejan del centro al hacer scroll.
           allCards.forEach((card) => {
+            const onUpdate = createFocusUpdater(card)
             const st = ScrollTrigger.create({
               trigger: card,
               scroller: list,
@@ -90,9 +99,9 @@ const Work = () => {
               start: 'left right',
               end: 'right left',
               scrub: true,
-              onUpdate: applyFocus,
+              onUpdate,
             })
-            applyFocus(st)
+            onUpdate(st)
           })
 
           // Loop infinito: arrancamos centrados en la copia "main" (la de en medio).
@@ -126,6 +135,7 @@ const Work = () => {
         // en ella; según se hace scroll, va perdiendo foco igual que en desktop, solo
         // que aquí el recorrido es vertical y el scroller es el body, no la lista.
         mainCards.forEach((card) => {
+          const onUpdate = createFocusUpdater(card)
           const st = ScrollTrigger.create({
             trigger: card,
             // El layout global (globals.css) hace que quien scrollea sea <body>, no window
@@ -133,9 +143,9 @@ const Work = () => {
             start: 'top bottom',
             end: 'bottom top',
             scrub: true,
-            onUpdate: applyFocus,
+            onUpdate,
           })
-          applyFocus(st)
+          onUpdate(st)
         })
       })
     }, 800)
